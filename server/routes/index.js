@@ -1,9 +1,9 @@
 const passport = require('passport');
 const bcrypt = require('bcrypt');
-const paths = require('./config/constants').paths;
+const paths = require('../config/constants').paths;
 
 // custom user model
-var Model = require('./models/user');
+var User = require('../models/user');
 
 // index
 var index = function(req, res, next) {
@@ -62,7 +62,7 @@ var signUp = function(req, res, next) {
 var signUpPost = function(req, res, next) {
    var user = req.body;
    var usernamePromise = null;
-   usernamePromise = new Model.User({username: user.username}).fetch();
+   usernamePromise = new User({username: user.username}).fetch();
 
    return usernamePromise.then(function(model) {
       if (model) {
@@ -75,7 +75,7 @@ var signUpPost = function(req, res, next) {
          bcrypt.genSalt(saltRounds, function(err, salt) {
            bcrypt.hash(password, salt, function(err, hash) {
              // Store hash in your password DB
-             var signUpUser = new Model.User({username: user.username, password: hash});
+             var signUpUser = new User({username: user.username, password: hash});
 
              signUpUser.save().then(function(model) {
                 // sign in the newly registered user

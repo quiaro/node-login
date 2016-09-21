@@ -1,4 +1,3 @@
-// vendor libraries
 var express = require('express');
 var bodyParser = require('body-parser');
 var session = require('express-session');
@@ -7,17 +6,20 @@ var ejs = require('ejs');
 var path = require('path');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var paths = require('./config/constants').paths;
 
-// App routes
-var route = require('./route');
+/*
+ * App routes
+ */
+var routes = require('./routes/index');
 
 // App user model
-var Model = require('./models/user');
+var User = require('./models/user');
 
 var app = express();
 
 passport.use(new LocalStrategy(function(username, password, done) {
-   new Model.User({username: username}).fetch().then(function(data) {
+   new User({username: username}).fetch().then(function(data) {
       var user = data;
       if (user === null) {
          return done(null, false, {message: 'Invalid username or password'});
@@ -41,7 +43,7 @@ passport.serializeUser(function(user, done) {
 
 // TODO: What is this?
 passport.deserializeUser(function(username, done) {
-   new Model.User({username: username}).fetch().then(function(user) {
+   new User({username: username}).fetch().then(function(user) {
       done(null, user);
    });
 });
@@ -52,6 +54,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // Application middlewares
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
@@ -64,27 +67,18 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Define routes
-// GET
-app.get('/', route.index);
+app.get(paths.index, routes.index);
 
-// signin
-// GET
-app.get('/signin', route.signIn);
-// POST
-app.post('/signin', route.signInPost);
+app.get(paths.signin, routes.signIn);
+app.post(paths.signin, routes.signInPost);
 
-// signup
-// GET
-app.get('/signup', route.signUp);
-// POST
-app.post('/signup', route.signUpPost);
+app.get(paths.signup, routes.signUp);
+app.post(paths.signup, routes.signUpPost);
 
-// logout
-// GET
-app.get('/signout', route.signOut);
+app.get(paths.signout, routes.signOut);
 
 // 404 not found
-app.use(route.notFound404);
+app.use(routes.notFound404);
 
 var server = app.listen(app.get('port'), function(err) {
    if(err) throw err;

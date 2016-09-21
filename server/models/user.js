@@ -5,6 +5,4 @@ var User = bookshelf.Model.extend({
    idAttribute: 'userId',
 });
 
-module.exports = {
-   User: User
-};
+module.exports = User;

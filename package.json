@@ -3,17 +3,17 @@
   "description": "ExpressJs + Passport.js + MySQL Authentication",
   "version": "1.0.0",
   "author": "",
-  "main": "app/app.js",
+  "main": "server/app.js",
   "scripts": {
-    "dev": "nodemon -V app/app.js",
-    "test": "./node_modules/.bin/mocha -w"
+    "dev": "nodemon -V server/app.js",
+    "test": "./node_modules/.bin/mocha -w --recursive"
   },
   "dependencies": {
     "bcrypt": "^0.8.7",
     "body-parser": "1.15.2",
     "bookshelf": "0.10.1",
     "cookie-parser": "1.4.3",
-    "ejs": "2.5.2",
+    "ejs": "^2.5.2",
     "express": "4.x",
     "express-session": "1.14.1",
     "knex": "^0.12.1",
