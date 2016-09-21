@@ -1,5 +1,6 @@
-var passport = require('passport');
-var bcrypt = require('bcrypt');
+const passport = require('passport');
+const bcrypt = require('bcrypt');
+const paths = require('./config/constants').paths;
 
 // custom user model
 var Model = require('./models/user');
@@ -7,9 +8,8 @@ var Model = require('./models/user');
 // index
 var index = function(req, res, next) {
    if(!req.isAuthenticated()) {
-      res.redirect('/signin');
+      res.redirect(paths.signin);
    } else {
-
       var user = req.user;
 
       if (user !== undefined) {
@@ -21,7 +21,7 @@ var index = function(req, res, next) {
 
 // sign in
 var signIn = function(req, res, next) {
-   if (req.isAuthenticated()) res.redirect('/');
+   if (req.isAuthenticated()) res.redirect(paths.index);
    res.render('signin', {title: 'Sign In'});
 };
 
@@ -29,8 +29,8 @@ var signIn = function(req, res, next) {
 // POST
 var signInPost = function(req, res, next) {
    passport.authenticate('local', {
-     successRedirect: '/',
-     failureRedirect: '/signin' },
+     successRedirect: paths.index,
+     failureRedirect: paths.signin },
 
      function(err, user, info) {
       if (err) {
@@ -44,7 +44,7 @@ var signInPost = function(req, res, next) {
          if (err) {
             return res.render('signin', {title: 'Sign In', errorMessage: err.message});
          } else {
-            return res.redirect('/');
+            return res.redirect(paths.index);
          }
       });
    })(req, res, next);
@@ -53,7 +53,7 @@ var signInPost = function(req, res, next) {
 // sign up
 // GET
 var signUp = function(req, res, next) {
-   if (req.isAuthenticated()) res.redirect('/');
+   if (req.isAuthenticated()) res.redirect(paths.index);
    res.render('signup', {title: 'Sign Up'});
 };
 
@@ -93,7 +93,7 @@ var signOut = function(req, res, next) {
       notFound404(req, res, next);
    } else {
       req.logout();
-      res.redirect('/signin');
+      res.redirect(paths.signin);
    }
 };
 

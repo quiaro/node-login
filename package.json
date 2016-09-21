@@ -5,7 +5,8 @@
   "author": "",
   "main": "app/app.js",
   "scripts": {
-    "dev": "nodemon -V app/app.js"
+    "dev": "nodemon -V app/app.js",
+    "test": "./node_modules/.bin/mocha -w"
   },
   "dependencies": {
     "bcrypt": "^0.8.7",
@@ -21,6 +22,7 @@
     "passport-local": "1.0.0"
   },
   "devDependencies": {
+    "mocha": "^3.0.2",
     "nodemon": "^1.10.2"
   }
 }
