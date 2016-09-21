@@ -39,12 +39,10 @@ passport.use(new LocalStrategy(function(username, password, done) {
    });
 }));
 
-// TODO: What is this?
 passport.serializeUser(function(user, done) {
   done(null, user.username);
 });
 
-// TODO: What is this?
 passport.deserializeUser(function(username, done) {
    new User({username: username}).fetch().then(function(user) {
       done(null, user);
