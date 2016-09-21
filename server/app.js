@@ -33,6 +33,9 @@ passport.use(new LocalStrategy(function(username, password, done) {
            }
          });
       }
+   }, function(err) {
+     // Return error if there was a problem with the database connection
+     return done(err);
    });
 }));
 
