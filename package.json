@@ -5,7 +5,7 @@
   "author": "",
   "main": "server/app.js",
   "scripts": {
-    "start": "server/app.js",
+    "start": "node server/app.js",
     "dev": "nodemon -V server/app.js",
     "test": "./node_modules/.bin/mocha -w --recursive"
   },
