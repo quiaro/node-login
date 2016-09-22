@@ -43,11 +43,12 @@ passport.use(new LocalStrategy(function(username, password, done) {
 passport.use(new FacebookStrategy({
     clientID: 305911516438444,
     clientSecret: "1ac7254bea95ca83f6148f7579d3d818",
-    callbackURL: "https://e924.herokuapp.com/auth/facebook/callback"
+    callbackURL: "https://e923.herokuapp.com/auth/facebook/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     console.log("Access Token: ", accessToken);
     console.log("Profile: ", profile);
+    done(null);
     // User.findOrCreate(..., function(err, user) {
     //   if (err) { return done(err); }
     //   done(null, user);
