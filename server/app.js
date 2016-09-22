@@ -1,12 +1,13 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var session = require('express-session');
-var bcrypt = require('bcrypt');
-var ejs = require('ejs');
-var path = require('path');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var paths = require('./config/constants').paths;
+const express = require('express');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const bcrypt = require('bcrypt');
+const ejs = require('ejs');
+const path = require('path');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
+const paths = require('./config/constants').paths;
 
 /*
  * App routes
@@ -39,6 +40,21 @@ passport.use(new LocalStrategy(function(username, password, done) {
    });
 }));
 
+passport.use(new FacebookStrategy({
+    clientID: 305911516438444,
+    clientSecret: "1ac7254bea95ca83f6148f7579d3d818",
+    callbackURL: "https://e924.herokuapp.com/auth/facebook/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    console.log("Access Token: ", accessToken);
+    console.log("Profile: ", profile);
+    // User.findOrCreate(..., function(err, user) {
+    //   if (err) { return done(err); }
+    //   done(null, user);
+    // });
+  }
+));
+
 passport.serializeUser(function(user, done) {
   done(null, user.username);
 });
@@ -69,6 +85,12 @@ app.use(passport.session());
 
 // Define routes
 app.get(paths.index, routes.index);
+
+app.get(paths.facebookAuth, passport.authenticate('facebook'));
+app.get(paths.facebookCallback, passport.authenticate('facebook', {
+  successRedirect: paths.index,
+  failureRedirect: paths.signin
+}));
 
 app.get(paths.signin, routes.signIn);
 app.post(paths.signin, routes.signInPost);

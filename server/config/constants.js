@@ -1,6 +1,8 @@
 module.exports.paths = {
-  index: '/',
-  signin: '/signin',
-  signup: '/signup',
-  signout: '/signout'
+  facebookAuth:     '/auth/facebook',
+  facebookCallback: '/auth/facebook/callback',
+  index:            '/',
+  signin:           '/signin',
+  signout:          '/signout',
+  signup:           '/signup'
 }
